@@ -1,14 +1,14 @@
+#include <cstring>
 #include <iostream>
 #include <queue>
 #include <stack>
-#include <cstring> 
 using namespace std;
 
 struct Node {
     int key;
     Node* left;
     Node* right;
-}; 
+};
 
 struct BSTree {
     Node* root;
@@ -34,9 +34,7 @@ Node* createNode(int data) {
 }
 
 void insertNode(BSTree* tree, int key) {
-    if (tree == nullptr) {
-        return;
-    }
+    if (tree == nullptr) { return; }
     Node* new_node = createNode(key);
 
     Node* node = tree->root;
@@ -49,23 +47,16 @@ void insertNode(BSTree* tree, int key) {
     Node* prev;
     while (current != nullptr) {
         prev = current;
-        if (key < current->key) {
-            current = current->left;
-        }
-        else {
-            current = current->right;
-        }
+        if (key < current->key) { current = current->left; }
+        else { current = current->right; }
     }
-    if (prev->key > key) {
-        prev->left = new_node;
-    }
-    else {
-        prev->right = new_node;
-    }
+    if (prev->key > key) { prev->left = new_node; }
+    else { prev->right = new_node; }
     return;
 }
 
-// Successor has to be the largest node in the left subtree or the smallest node in the right subtree
+// Successor has to be the largest node in the left subtree or the smallest node
+// in the right subtree
 void deleteNode(BSTree* tree, int key) {
     if (tree == nullptr) { return; }
 
@@ -75,28 +66,19 @@ void deleteNode(BSTree* tree, int key) {
     // find the node to be deleted
     while (current != nullptr && current->key != key) {
         parent = current;
-        if (key < current->key) {
-            current = current->left;
-        }
-        else {
-            current = current->right;
-        }
+        if (key < current->key) { current = current->left; }
+        else { current = current->right; }
     }
 
     if (current == nullptr) {
         parent = tree->root;
         current = tree->root;
-        while ()
     }
 
     // case 1: to_be_deleted is leaf node;
     if (current->left == nullptr && current->right == nullptr) {
-        if (parent->left == current) {
-            parent->left = nullptr;
-        }
-        else {
-            parent->right = nullptr;
-        }
+        if (parent->left == current) { parent->left = nullptr; }
+        else { parent->right = nullptr; }
         delete current;
         return;
     }
@@ -104,12 +86,8 @@ void deleteNode(BSTree* tree, int key) {
     // case 2: to_be_deleted has only 1 child
     if (current->left == nullptr || current->right == nullptr) {
         Node* child = current->left == nullptr ? current->right : current->left;
-        if (parent->left == current) {
-            parent->left = child;
-        }
-        else {
-            parent->right = child;
-        }
+        if (parent->left == current) { parent->left = child; }
+        else { parent->right = child; }
         delete current;
         return;
     }
@@ -126,32 +104,21 @@ void deleteNode(BSTree* tree, int key) {
     if (successor_parent->left == successor) {
         successor_parent->left = successor->right;
     }
-    else {
-        successor_parent->right = successor->right;
-    }
+    else { successor_parent->right = successor->right; }
     current->key = successor->key;
     delete successor;
     return;
 }
 
-
 Node* search(const BSTree* tree, int value) {
-    if (tree == nullptr) {
-        return nullptr;
-    }
+    if (tree == nullptr) { return nullptr; }
 
-    Node* current = tree->root; 
+    Node* current = tree->root;
     while (current != nullptr) {
-        if (value < current->key) {
-            current = current->left;
-        }
-        else {
-            current = current->right;
-        }
+        if (value < current->key) { current = current->left; }
+        else { current = current->right; }
 
-        if (current->key == value) {
-            return current;
-        }
+        if (current->key == value) { return current; }
     }
     std::cout << "Not found.\n";
     return nullptr;
@@ -159,10 +126,8 @@ Node* search(const BSTree* tree, int value) {
 
 // preorder traversal: current -> left -> right
 void preTravel(const BSTree* tree) {
-    if (tree == nullptr) {
-        return;
-    }
-    
+    if (tree == nullptr) { return; }
+
     stack<Node*> s;
     Node* current = tree->root;
     s.push(current);
@@ -171,7 +136,7 @@ void preTravel(const BSTree* tree) {
         current = s.top();
         s.pop();
         if (current->right != nullptr) s.push(current->right);
-        if (current->left != nullptr) s.push(current->left);   
+        if (current->left != nullptr) s.push(current->left);
     }
 
     return;
@@ -179,9 +144,7 @@ void preTravel(const BSTree* tree) {
 
 // Inorder_traversal: left->current->right, this will give us a sorted array
 void inTravel(BSTree* tree) {
-    if (tree == nullptr || tree->root == nullptr) {
-        return;
-    }
+    if (tree == nullptr || tree->root == nullptr) { return; }
 
     // approach #1: Morris traversal
     // Node* current = tree->root;
@@ -211,10 +174,11 @@ void inTravel(BSTree* tree) {
     /*
     1. Create an empty stack (say S).
     2. Initialize the current node as root.
-    3. Push the current node to S and set current = current->left until current is NULL
+    3. Push the current node to S and set current = current->left until current
+    is NULL
     4. If current is NULL and the stack is not empty then:
             Pop the top item from the stack.
-            Print the popped item and set current = popped_item->right 
+            Print the popped item and set current = popped_item->right
             Go to step 3.
     5. If current is NULL and the stack is empty then we are done.
     */
@@ -228,9 +192,7 @@ void inTravel(BSTree* tree) {
             continue;
         }
 
-        if (s.empty()) {
-            break;
-        }
+        if (s.empty()) { break; }
 
         current = s.top();
         s.pop();
@@ -238,7 +200,7 @@ void inTravel(BSTree* tree) {
         current = current->right;
     }
     return;
-    
+
     // approach #3: recursion
     // void preTravel(Node* node) {
     // preTravel(tree->root->left);
@@ -247,11 +209,9 @@ void inTravel(BSTree* tree) {
     // }
 }
 
-// postTraversal: left->right->current, 
+// postTraversal: left->right->current,
 void postTravel(BSTree* tree) {
-    if (tree == nullptr || tree->root == nullptr) {
-        return;
-    }
+    if (tree == nullptr || tree->root == nullptr) { return; }
 
     stack<Node*> s;
     Node* current = tree->root;
@@ -260,21 +220,15 @@ void postTravel(BSTree* tree) {
     while (!s.empty()) {
         current = s.top();
         if (prev == NULL || prev->left == current || prev->right == current) {
-            if (current->left != nullptr) {
-                s.push(current->left);
-            }
-            else if (current->right != nullptr) {
-                s.push(current->right);
-            }
+            if (current->left != nullptr) { s.push(current->left); }
+            else if (current->right != nullptr) { s.push(current->right); }
             else {
                 std::cout << current->key << ' ';
                 s.pop();
             }
         }
         else if (current->left == prev) {
-            if (current->right != nullptr) {
-                s.push(current->right);
-            }
+            if (current->right != nullptr) { s.push(current->right); }
             else {
                 std::cout << current->key << ' ';
                 s.pop();
@@ -289,9 +243,7 @@ void postTravel(BSTree* tree) {
 }
 
 void BFS(BSTree* tree) {
-    if (tree == nullptr) {
-        return;
-    }
+    if (tree == nullptr) { return; }
     queue<Node*> q;
     Node* current = tree->root;
     q.push(current);
@@ -306,9 +258,7 @@ void BFS(BSTree* tree) {
 }
 
 void DFS(BSTree* tree) {
-    if (tree == nullptr) {
-        return;
-    }
+    if (tree == nullptr) { return; }
     stack<Node*> s;
     Node* current = tree->root;
     s.push(current);
@@ -322,11 +272,8 @@ void DFS(BSTree* tree) {
     return;
 }
 
-
 void deinitialize(BSTree* tree) {
-    if (tree == nullptr) {
-        return;
-    }
+    if (tree == nullptr) { return; }
     Node* current = tree->root;
     queue<Node*> q;
     q.push(current);
@@ -364,6 +311,6 @@ int main() {
     // insertNode(tree, 2);
     // insertNode(tree, 17);
 
-    deleteNode(tree->root, 5);
+    deleteNode(tree, 5);
     inTravel(tree);
 }

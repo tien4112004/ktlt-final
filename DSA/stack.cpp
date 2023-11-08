@@ -34,7 +34,7 @@ template<typename T> bool Stack<T>::push(T key) {
 /// @brief return top value of the stack
 /// @return top value of the stack: int
 template<typename T> T Stack<T>::front() {
-    if (top == nullptr) return -(1 << 30);
+    if (top == nullptr) throw new std::runtime_error("Empty stack");
     return top->key;
 };
 

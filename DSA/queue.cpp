@@ -6,6 +6,7 @@ template<typename T> Queue<T>::Queue() {
     tail = nullptr;
     // cout << "Initiated!";
 }
+
 // void copy(Stack A);
 
 /// @brief check if Queue is empty
